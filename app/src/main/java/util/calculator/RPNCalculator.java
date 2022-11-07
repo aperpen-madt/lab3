@@ -1,7 +1,5 @@
 package util.calculator;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.List;
@@ -29,8 +27,9 @@ public class RPNCalculator implements Calculator {
 
     private boolean isOperator(char ch) {
         for (Character op : OPERATORS.keySet()) {
-            if (ch == op)
+            if (ch == op) {
                 return true;
+            }
         }
 
         return false;
@@ -82,20 +81,23 @@ public class RPNCalculator implements Calculator {
                     stack.push(current);
                 } else if (current == ')') {
                     while (stack.peek() != '(') {
-                        if (stack.isEmpty())
+                        if (stack.isEmpty()) {
                             throw new InvalidExpressionException();
+                        }
                         tokens.add(Character.toString(stack.pop()));
                     }
                     stack.pop(); // Remove matching parenthesis
                 }
             }
         }
-        if (operand.length() > 0)
+        if (operand.length() > 0) {
             tokens.add(operand.toString());
+        }
         while (!stack.isEmpty()) {
             Character peek = stack.pop();
-            if (peek == '(')
+            if (peek == '(') {
                 throw new InvalidExpressionException();
+            }
 
             tokens.add(Character.toString(peek));
         }
@@ -144,7 +146,7 @@ public class RPNCalculator implements Calculator {
         //expression = expression.replaceAll("-\\(", "-1*(");
         expression = expression.replaceAll("\\(-", "(0-");
 
-        Pattern invalidPatterns = Pattern.compile("(?:[0-9]√)|(?:[0-9]\\()|(?:\\)[0-9])");
+        Pattern invalidPatterns = Pattern.compile("([0-9]√)|([0-9]\\()|(\\)[0-9])");
         Matcher m = invalidPatterns.matcher(expression);
         if (m.find()) {
             // Do not allow skipping operators after/before parenthesis i.e. {digit}( or ){digit}
