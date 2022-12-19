@@ -141,8 +141,6 @@ public class RPNCalculator implements Calculator {
     }
 
     private String preprocessInfix(String expression) throws InvalidExpressionException{
-        // This feature could be used to implement nth-roots in future
-        expression = expression.replaceAll("√", "2√");
         //expression = expression.replaceAll("-\\(", "-1*(");
         expression = expression.replaceAll("\\(-", "(0-");
 
@@ -152,6 +150,9 @@ public class RPNCalculator implements Calculator {
             // Do not allow skipping operators after/before parenthesis i.e. {digit}( or ){digit}
             throw new InvalidExpressionException();
         }
+
+        // This feature could be used to implement nth-roots in future
+        expression = expression.replaceAll("√", "2√");
 
         if (expression.startsWith("-") || expression.startsWith("+")) {
             expression = "0" + expression;
